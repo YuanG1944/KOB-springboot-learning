@@ -1,9 +1,20 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link>
-    <!-- <router-link to="/about">About</router-link> -->
-  </div>
-  <router-view />
+  <Views />
 </template>
+<script>
+import Views from "@/views";
+export default {
+  components: {
+    Views,
+  },
+};
+</script>
 
-<style lang="less"></style>
+<style lang="less">
+body {
+  margin: 0;
+  box-sizing: border-box;
+  background-color: #dcdde1;
+  overflow: hidden;
+}
+</style>
