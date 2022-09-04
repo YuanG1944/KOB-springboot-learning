@@ -26,8 +26,7 @@ export default class GameObject {
     for (let i in AC_GAME_OBJECTS) {
       const obj = AC_GAME_OBJECTS[i];
       if (obj === this) {
-        console.log("<--destroy--->");
-        AC_GAME_OBJECTS.splice(i);
+        AC_GAME_OBJECTS.splice(Number(i));
         break;
       }
     }
