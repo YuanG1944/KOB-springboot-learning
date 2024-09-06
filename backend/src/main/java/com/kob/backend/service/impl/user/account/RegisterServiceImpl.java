@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,56 +22,59 @@ public class RegisterServiceImpl implements RegisterService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public Map<String, String> register(String username, String password, String confirmedPassword) {
-        Map<String, String> map = new HashMap<>();
+    public Map<String, String> register(String username, String password, String confirmPassword) {
+        Map<String, String> map = new HashMap<String, String>();
         if (username == null) {
-            map.put("error_message", "用户名不能为空");
+            map.put("error_message", "username is null");
             return map;
         }
-        if (password == null || confirmedPassword == null) {
-            map.put("error_message", "密码不能为空");
+        if (password == null) {
+            map.put("error_message", "password is null");
+            return map;
+        }
+        if (confirmPassword == null) {
+            map.put("error_message", "confirmPassword is null");
             return map;
         }
 
         username = username.trim();
-        if (username.length() == 0) {
-            map.put("error_message", "用户名不能为空");
-            return map;
-        }
 
-        if (password.length() == 0 || confirmedPassword.length() == 0) {
-            map.put("error_message", "密码不能为空");
+        if (username.length() == 0) {
+            map.put("error_message", "username is empty");
+            return map;
         }
 
         if (username.length() > 100) {
-            map.put("error_message", "用户名长度不能大于100");
+            map.put("error_message", "username too long");
             return map;
         }
 
-        if (password.length() > 100 || confirmedPassword.length() > 100) {
-            map.put("error_message", "密码长度不能大于100");
+        if (password.length() > 100 || confirmPassword.length() > 100) {
+            map.put("error_message", "password too long");
             return map;
         }
 
-        if (!password.equals(confirmedPassword)) {
-            map.put("error_message", "两次输入的密码不一致");
+        if (!password.equals(confirmPassword)) {
+            map.put("error_message", "passwords do not match");
             return map;
         }
 
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", username);
         List<User> users = userMapper.selectList(queryWrapper);
-        if (!users.isEmpty()) {
-            map.put("error_message", "用户名已存在");
+        if (users.size() > 0) {
+            map.put("error_message", "username already exist");
             return map;
         }
 
         String encodedPassword = passwordEncoder.encode(password);
-        String photo = "https://cdn.acwing.com/media/user/profile/photo/1_lg_844c66b332.jpg";
+        String photo = "https://cdn.acwing.com/media/user/profile/photo/41057_lg_5b25efa0af.jpg";
+
         User user = new User(null, username, encodedPassword, photo);
         userMapper.insert(user);
 
-        map.put("error_message", "success");
+        map.put("success_message", "user registered successfully");
+
         return map;
     }
 }

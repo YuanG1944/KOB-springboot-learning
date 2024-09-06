@@ -15,7 +15,7 @@ import java.util.UUID;
 @Component
 public class JwtUtil {
     public static final long JWT_TTL = 60 * 60 * 1000L * 24 * 14;  // 有效期14天
-    public static final String JWT_KEY = "JSDFSDFSDFASJDHASDASDdfa32dJHASFDA67765asda123";
+    public static final String JWT_KEY = "SDFGjhdsfalshdfHFdsjkdsfds121232131afasdfac";
 
     public static String getUUID() {
         return UUID.randomUUID().toString().replaceAll("-", "");
@@ -37,13 +37,7 @@ public class JwtUtil {
 
         long expMillis = nowMillis + ttlMillis;
         Date expDate = new Date(expMillis);
-        return Jwts.builder()
-                .setId(uuid)
-                .setSubject(subject)
-                .setIssuer("sg")
-                .setIssuedAt(now)
-                .signWith(signatureAlgorithm, secretKey)
-                .setExpiration(expDate);
+        return Jwts.builder().setId(uuid).setSubject(subject).setIssuer("sg").setIssuedAt(now).signWith(signatureAlgorithm, secretKey).setExpiration(expDate);
     }
 
     public static SecretKey generalKey() {
@@ -53,10 +47,6 @@ public class JwtUtil {
 
     public static Claims parseJWT(String jwt) throws Exception {
         SecretKey secretKey = generalKey();
-        return Jwts.parserBuilder()
-                .setSigningKey(secretKey)
-                .build()
-                .parseClaimsJws(jwt)
-                .getBody();
+        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(jwt).getBody();
     }
 }
