@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +38,7 @@ public class RegisterServiceImpl implements RegisterService {
 
         username = username.trim();
 
-        if (username.length() == 0) {
+        if (username.isEmpty()) {
             map.put("error_message", "username is empty");
             return map;
         }
@@ -62,7 +61,7 @@ public class RegisterServiceImpl implements RegisterService {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", username);
         List<User> users = userMapper.selectList(queryWrapper);
-        if (users.size() > 0) {
+        if (!users.isEmpty()) {
             map.put("error_message", "username already exist");
             return map;
         }
